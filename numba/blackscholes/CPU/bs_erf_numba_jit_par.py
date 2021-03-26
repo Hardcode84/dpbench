@@ -5,9 +5,10 @@
 
 import base_bs_erf
 import numba as nb
+import numba_dpcomp
 from math import log, sqrt, exp, erf
 
-@nb.njit(fastmath=True, parallel=True)
+@numba_dpcomp.njit(fastmath=True, parallel=True)
 def black_scholes( nopt, price, strike, t, rate, vol, call, put):
     mr = -rate
     sig_sig_two = vol * vol * 2
