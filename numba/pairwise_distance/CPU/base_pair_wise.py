@@ -32,12 +32,11 @@ def gen_data(nopt,dims):
     return (
         rnd.random((nopt, dims)),
         rnd.random((nopt, dims)),
-        np.empty((nopt, nopt))
     )
 
 ##############################################
 
-def run(name, alg, sizes=5, step=2, nopt=2**10):
+def run(name, alg, sizes=5, step=2, nopt=2**9):
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--steps', required=False, default=sizes,  help="Number of steps")
@@ -68,13 +67,15 @@ def run(name, alg, sizes=5, step=2, nopt=2**10):
     f2 = open("runtimes.csv",'w',1)
 
     for i in xrange(sizes):
-        X,Y,D = gen_data(nopt,dims)
+        X,Y = gen_data(nopt,dims)
         iterations = xrange(repeat)
 
-        alg(X,Y,D) #warmup
+        D = alg(X,Y) #warmup
+        # if i == 0:
+        #     print(D, flush=True)
         t0 = now()
         for _ in iterations:
-            alg(X,Y,D)
+            alg(X,Y)
 
         mops,time = get_mops(t0, now(), nopt)
         f.write(str(nopt) + "," + str(mops*2*repeat) + "\n")
