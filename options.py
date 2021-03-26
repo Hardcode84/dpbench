@@ -97,7 +97,7 @@ class workloads():
     def __init__(self, input_wls=[], kernel_mode=False):
         print(input_wls)
 
-        wl_names = {all_workloads.blackscholes.value:{'numba':"bs_erf_numba_numpy.py",
+        wl_names = {all_workloads.blackscholes.value:{'numba':"bs_erf_numba_jit_par.py",
                                                       'kernel':"bs_erf_numba_kernel.py"},
                     all_workloads.dbscan.value:{'numba':"dbscan.py",
                                                 'kernel':"dbscan_kernel.py"},
@@ -108,6 +108,7 @@ class workloads():
                     all_workloads.l2_distance.value:{'numba':"l2_distance.py",
                                                      'kernel':"l2_distance.py"},
                     all_workloads.pairwise_distance.value:{'numba':"pairwise_distance.py",
+                    # all_workloads.pairwise_distance.value:{'numba':"pw_numba.py",
                                                            'kernel':"pairwise_distance_kernel.py"},
                     all_workloads.pca.value:{'numba':"pca.py",
                                              'kernel':"pca.py"},
