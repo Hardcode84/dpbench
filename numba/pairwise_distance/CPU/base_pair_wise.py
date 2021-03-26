@@ -36,7 +36,7 @@ def gen_data(nopt,dims):
 
 ##############################################
 
-def run(name, alg, sizes=5, step=2, nopt=2**9):
+def run(name, alg, sizes=5, step=2, nopt=2**10):
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--steps', required=False, default=sizes,  help="Number of steps")
