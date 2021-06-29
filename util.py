@@ -15,7 +15,7 @@ def parse_time(s):
 
     obj = re.compile(regex, re.VERBOSE).search(s)
     assert(obj)
-    
+
     user, system, elapsed = obj.groups()
     return float(user)
 
@@ -46,12 +46,12 @@ def log_message(s="", newline=True):
     message_log_string += s
     sys.stdout.write(s)
     sys.stdout.flush()
-    
+
 def log_error(s=""):
     global error_counter
     log_message(s)
     error_counter += 1
-    
+
 def log_heading(s="", character="-"):
     log_message()
     log_message(s)
@@ -65,11 +65,11 @@ class ExperimentError(Exception):
         self.command = command
         limit = 10000
         if(len(output) > limit):
-          self.output = output[:limit/2] + "\n\n...TRUNCATED...\n\n" + output[-limit/2:]
+          self.output = output[:limit//2] + "\n\n...TRUNCATED...\n\n" + output[-limit//2:]
         else:
           self.output = output
     def __str__(self):
-        return "ExperimentError:" + repr(self.command)
+        return "ExperimentError:" + repr(self.command) + "\n" + self.output
 
 def run_command(command_string, input_string="", max_lines=0, verbose=False, echo=True, throw_exception=True, filename=None):
 
