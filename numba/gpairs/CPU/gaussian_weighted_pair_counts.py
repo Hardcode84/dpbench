@@ -1,6 +1,7 @@
 import numpy as np
 #from numba import njit
-from numba import njit
+#from numba import njit
+from numba_dpcomp import njit
 try:
     import numba_dppy
 except:

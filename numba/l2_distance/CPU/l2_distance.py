@@ -6,8 +6,9 @@
 import base_l2_distance
 import numpy as np
 import numba
+import numba_dpcomp
 
-@numba.jit(nopython=True,parallel=True,fastmath=True)
+@numba_dpcomp.jit(nopython=True,parallel=True,fastmath=True)
 def l2_distance(a,b):
     sub = a-b
     sq = np.square(sub)
