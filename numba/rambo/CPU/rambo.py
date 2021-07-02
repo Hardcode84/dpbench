@@ -4,9 +4,10 @@ import mkl_random
 import numpy
 import numba
 import base_rambo
+import numba_dpcomp
 
 
-@numba.jit(nopython=True, fastmath=True)
+@numba_dpcomp.jit(nopython=True, fastmath=True)
 def vectmultiply(a, b):
     c = a * b
     return c[..., 0] - c[..., 1] - c[..., 2] - c[..., 3]
@@ -37,18 +38,18 @@ def get_inputs(ecms, nevts):
     return input_particles
 
 
-@numba.jit(nopython=True, fastmath=True)
+@numba_dpcomp.jit(nopython=True, fastmath=True)
 def get_momentum_sum(inarray):
     return numpy.sum(inarray, axis=1)
 
 
-@numba.jit(nopython=True)
+@numba_dpcomp.jit(nopython=True)
 def get_combined_mass(inarray):
     sum = get_momentum_sum(inarray)
     return get_mass(sum)
 
 
-@numba.jit(nopython=True, fastmath=True)
+@numba_dpcomp.jit(nopython=True, fastmath=True)
 def get_mass(inarray):
     mom2 = numpy.sum(inarray[..., 1:4]**2, axis=1)
     mass = numpy.sqrt(inarray[..., 0]**2 - mom2)
@@ -65,7 +66,7 @@ def gen_rand_data(nevts, nout):
     return C1, F1, Q1
 
 
-@numba.jit(nopython=True, parallel=True, fastmath=True)
+@numba_dpcomp.jit(nopython=True, parallel=True, fastmath=True)
 def get_output_mom2(C1, F1, Q1, nevts, nout):
     output = numpy.empty((nevts, nout, 4))
 

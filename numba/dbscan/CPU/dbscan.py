@@ -26,6 +26,7 @@
 
 import numpy as np
 from numba import jit, prange
+import numba_dpcomp
 import base_dbscan
 import utils
 
@@ -34,7 +35,8 @@ UNDEFINED = -2
 DEFAULT_QUEUE_CAPACITY = 10
 
 
-@jit(nopython=True, parallel=True, fastmath=True)
+# @jit(nopython=True, parallel=True, fastmath=True)
+@numba_dpcomp.njit(parallel=True, fastmath=True)
 def get_neighborhood(n, dim, data, eps, ind_lst, sz_lst, assignments):
     block_size = 1
     nblocks = n // block_size + int(n % block_size > 0)
@@ -63,7 +65,8 @@ def get_neighborhood(n, dim, data, eps, ind_lst, sz_lst, assignments):
                         sz_lst[j] = size + 1
 
 
-@jit(nopython=True)
+# @jit(nopython=True)
+@numba_dpcomp.njit()
 def compute_clusters(n, min_pts, assignments, sizes, indices_list):
     nclusters = 0
     nnoise = 0

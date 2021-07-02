@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 import numpy as np
-#import sys
+import sys
 
 #import numpy.random_intel as rnd
 import numpy.random as rnd
@@ -35,7 +35,7 @@ def gen_data(nopt,dims):
         rnd.random((nopt, dims))
     )
 
-##############################################	
+##############################################
 
 def run(name, alg, sizes=10, step=2, nopt=2**16):
     import argparse
@@ -46,7 +46,7 @@ def run(name, alg, sizes=10, step=2, nopt=2**16):
     parser.add_argument('--repeat',required=False, default=100,    help="Iterations inside measured region")
     parser.add_argument('--text',  required=False, default="",     help="Print with each result")
     parser.add_argument('-d', type=int, default=1, help='Dimensions')
-    
+
     args = parser.parse_args()
     sizes= int(args.steps)
     step = int(args.step)
@@ -57,12 +57,12 @@ def run(name, alg, sizes=10, step=2, nopt=2**16):
     rnd.seed(SEED)
     f=open("perf_output.csv",'w',1)
     f2 = open("runtimes.csv",'w',1)
-    
+
     for i in xrange(sizes):
         X,Y = gen_data(nopt,dims)
         iterations = xrange(repeat)
-        #print("ERF: {}: Size: {}".format(name, nopt), end=' ', flush=True)
-        #sys.stdout.flush()
+        print("ERF: {}: Size: {}".format(name, nopt), end=' ', flush=True)
+        sys.stdout.flush()
 
         alg(X,Y) #warmup
         t0 = now()
@@ -72,10 +72,10 @@ def run(name, alg, sizes=10, step=2, nopt=2**16):
             #print("Time:", now()-t1)
 
         mops,time = get_mops(t0, now(), nopt)
-        #print("MOPS:", mops*2*repeat, args.text)
+        print("MOPS:", mops*2*repeat, args.text)
         f.write(str(nopt) + "," + str(mops*2*repeat) + "\n")
         f2.write(str(nopt) + "," + str(time) + "\n")
-        
+
         nopt *= step
         repeat -= step
         if repeat < 1:
