@@ -24,6 +24,7 @@ from .enums import ErrorCodes, ValidationStatusCodes
 from .framework import Framework
 from .numba_dpex_framework import NumbaDpexFramework
 from .numba_dpex_kernel_framework import NumbaDpexKernelFramework
+from .numba_dpcomp_framework import NumbaDpcompFramework
 from .numba_framework import NumbaFramework
 
 
@@ -639,7 +640,7 @@ class Benchmark(object):
 
         for bimpl in impl_fnlist:
 
-            if "_numba" in bimpl[0] and "_dpex" not in bimpl[0]:
+            if "_numba" in bimpl[0] and "_dpex" not in bimpl[0] and "_dpcomp" not in bimpl[0]:
                 impl_to_fw_map.update({bimpl[0]: NumbaFramework("numba")})
             elif "_numpy" in bimpl[0]:
                 impl_to_fw_map.update({bimpl[0]: Framework("numpy")})
@@ -664,6 +665,8 @@ class Benchmark(object):
                             "Framework could not be "
                             + "created for numba_dpex due to:"
                         )
+            elif "_dpcomp" in bimpl[0]:
+                impl_to_fw_map.update({bimpl[0]: NumbaDpcompFramework("numba_dpcomp")})
             elif "_sycl" in bimpl[0]:
                 try:
                     fw = DpcppFramework("dpcpp")

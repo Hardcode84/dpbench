@@ -1,0 +1,10 @@
+{
+    "framework": {
+        "simple_name": "numba_dpcomp",
+        "full_name": "numba_dpcomp",
+        "prefix": "dpcomp",
+        "class": "NumbaDpcompFramework",
+        "arch": "cpu",
+        "sycl_device": "level_zero:gpu:0"
+    }
+}
