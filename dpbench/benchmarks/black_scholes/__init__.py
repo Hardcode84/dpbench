@@ -26,6 +26,9 @@ from .black_scholes_numba_dpcomp_k import (
 from .black_scholes_numba_dpcomp_n import (
     black_scholes as black_scholes_numba_dpcomp_n,
 )
+from .black_scholes_numba_dpcomp_p import (
+    black_scholes as black_scholes_numba_dpcomp_p,
+)
 
 __all__ = [
     "initialize",
@@ -34,6 +37,8 @@ __all__ = [
     "black_scholes_numba_dpex_n",
     "black_scholes_numba_dpex_p",
     "black_scholes_numba_dpcomp_k",
+    "black_scholes_numba_dpcomp_n",
+    "black_scholes_numba_dpcomp_p",
     "black_scholes_numba_n",
     "black_scholes_numba_np",
     "black_scholes_numba_npr",
