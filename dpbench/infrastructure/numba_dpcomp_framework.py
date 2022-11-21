@@ -5,6 +5,7 @@
 import logging
 from typing import Any, Callable, Dict
 
+import numpy as np
 import pkg_resources
 
 from .framework import Framework
@@ -31,26 +32,30 @@ class NumbaDpcompFramework(Framework):
         """Returns the copy-method that should be used
         for copying the benchmark arguments to device."""
 
-        def _copy_to_func_impl(ref_array):
+        if self.sycl_device:
             import dpctl.tensor as dpt
 
-            if ref_array.flags["C_CONTIGUOUS"]:
-                order = "C"
-            elif ref_array.flags["F_CONTIGUOUS"]:
-                order = "F"
-            else:
-                order = "K"
-            return dpt.asarray(
-                obj=ref_array,
-                dtype=ref_array.dtype,
-                device=self.sycl_device,
-                copy=None,
-                usm_type=None,
-                sycl_queue=None,
-                order=order,
-            )
+            def _copy_to_func_impl(ref_array):
 
-        return _copy_to_func_impl
+                if ref_array.flags["C_CONTIGUOUS"]:
+                    order = "C"
+                elif ref_array.flags["F_CONTIGUOUS"]:
+                    order = "F"
+                else:
+                    order = "K"
+                return dpt.asarray(
+                    obj=ref_array,
+                    dtype=ref_array.dtype,
+                    device=self.sycl_device,
+                    copy=None,
+                    usm_type=None,
+                    sycl_queue=None,
+                    order=order,
+                )
+
+            return _copy_to_func_impl
+        else:
+            return np.copy
 
     def copy_from_func(self) -> Callable:
         """Returns the copy-method that should be used
@@ -58,9 +63,12 @@ class NumbaDpcompFramework(Framework):
         any array created by the framework possibly on
         a device memory domain."""
 
-        import dpctl.tensor as dpt
+        if self.sycl_device:
+            import dpctl.tensor as dpt
 
-        return dpt.asnumpy
+            return dpt.asnumpy
+        else:
+            return np.copy
 
     def execute(self, impl_fn: Callable, input_args: Dict):
         return impl_fn(**input_args)
