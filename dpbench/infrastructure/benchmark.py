@@ -498,7 +498,10 @@ class BenchmarkRunner:
                                 self.results.results.update(
                                     {outarr: npzfile[outarr]}
                                 )
-                            os.remove(output_npz)
+                            try:
+                                os.remove(output_npz)
+                            except:
+                                pass
                         if results_dict["return-value"]:
                             self.results.results.update(
                                 {"return-value": results_dict["return-value"]}
