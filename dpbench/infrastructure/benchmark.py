@@ -22,9 +22,9 @@ from .datamodel import store_results
 from .dpcpp_framework import DpcppFramework
 from .enums import ErrorCodes, ValidationStatusCodes
 from .framework import Framework
+from .numba_dpcomp_framework import NumbaDpcompFramework
 from .numba_dpex_framework import NumbaDpexFramework
 from .numba_dpex_kernel_framework import NumbaDpexKernelFramework
-from .numba_dpcomp_framework import NumbaDpcompFramework
 from .numba_framework import NumbaFramework
 
 
@@ -456,7 +456,7 @@ class BenchmarkRunner:
             with Manager() as manager:
                 results_dict = manager.dict()
                 p = Process(
-                    target=tout.exit_after(timeout)(_exec),
+                    target=_exec,
                     args=(
                         self.bench,
                         self.fmwrk,
@@ -469,7 +469,7 @@ class BenchmarkRunner:
                     ),
                 )
                 p.start()
-                res = p.join(timeout * 1.2)
+                res = p.join(timeout)
                 if res is None and p.exitcode is None:
                     logging.error(
                         "Terminating process due to timeout in the execution "
@@ -640,7 +640,11 @@ class Benchmark(object):
 
         for bimpl in impl_fnlist:
 
-            if "_numba" in bimpl[0] and "_dpex" not in bimpl[0] and "_dpcomp" not in bimpl[0]:
+            if (
+                "_numba" in bimpl[0]
+                and "_dpex" not in bimpl[0]
+                and "_dpcomp" not in bimpl[0]
+            ):
                 impl_to_fw_map.update({bimpl[0]: NumbaFramework("numba")})
             elif "_numpy" in bimpl[0]:
                 impl_to_fw_map.update({bimpl[0]: Framework("numpy")})
@@ -666,7 +670,9 @@ class Benchmark(object):
                             + "created for numba_dpex due to:"
                         )
             elif "_dpcomp" in bimpl[0]:
-                impl_to_fw_map.update({bimpl[0]: NumbaDpcompFramework("numba_dpcomp")})
+                impl_to_fw_map.update(
+                    {bimpl[0]: NumbaDpcompFramework("numba_dpcomp")}
+                )
             elif "_sycl" in bimpl[0]:
                 try:
                     fw = DpcppFramework("dpcpp")
