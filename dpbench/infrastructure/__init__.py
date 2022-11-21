@@ -12,8 +12,8 @@ from .datamodel import (
 from .dpcpp_framework import DpcppFramework
 from .dpnp_framework import DpnpFramework
 from .framework import Framework
-from .numba_dpex_framework import NumbaDpexFramework
 from .numba_dpcomp_framework import NumbaDpcompFramework
+from .numba_dpex_framework import NumbaDpexFramework
 from .numba_framework import NumbaFramework
 from .utilities import validate
 

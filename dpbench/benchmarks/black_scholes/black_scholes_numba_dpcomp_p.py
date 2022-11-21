@@ -8,6 +8,7 @@ from math import erf, exp, log, sqrt
 import numba
 import numba_dpcomp as nb
 
+
 # blackscholes implemented as a parallel loop using numba.prange
 @nb.njit(parallel=True, fastmath=True)
 def _black_scholes(nopt, price, strike, t, rate, volatility, call, put):
