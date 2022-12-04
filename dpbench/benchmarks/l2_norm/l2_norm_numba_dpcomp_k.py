@@ -4,8 +4,9 @@
 
 import math
 
-import numpy as np
 import numba_dpcomp.mlir.kernel_impl as nb
+import numpy as np
+
 
 @nb.kernel
 def l2_norm_kernel(a, d):
