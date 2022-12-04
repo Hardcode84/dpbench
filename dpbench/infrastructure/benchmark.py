@@ -89,6 +89,11 @@ def _exec(
     impl_fn = bench.get_impl(impl_postfix)
     inputs = dict()
 
+    # Set those values forst, in cast child peocess crash, they will be
+    # overwritten at the end.
+    results_dict["error_state"] = ErrorCodes.FAILED_EXECUTION
+    results_dict["error_msg"] = "Enexpected termination"
+
     with timer.timer() as t:
         args = get_args()
 
