@@ -314,8 +314,6 @@ class BenchmarkRunner:
 
             return results
 
-        _, conn = self.get_process(rc.framework)
-
         brc = BaseRunConfig.from_instance(rc)
 
         if rc.validate:
@@ -326,6 +324,7 @@ class BenchmarkRunner:
                 in {p.postfix for p in f.postfixes}
             ][0]
 
+        _, conn = self.get_process(rc.framework)
         conn.send(brc)
 
         if conn.poll(rc.timeout if rc.timeout else self._default_timeout):
