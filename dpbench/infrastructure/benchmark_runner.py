@@ -385,7 +385,6 @@ class BenchmarkRunner:
             )
 
 
-
 def _set_input_args(
     bench: Benchmark, framework: Framework, np_input_data: dict
 ):
