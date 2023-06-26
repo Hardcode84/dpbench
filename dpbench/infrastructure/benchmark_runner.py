@@ -316,6 +316,7 @@ class BenchmarkRunner:
 
         brc = BaseRunConfig.from_instance(rc)
 
+        _, conn = self.get_process(rc.framework)
         if rc.validate:
             brc.ref_framework: cfg.Framework = [
                 f
@@ -324,7 +325,6 @@ class BenchmarkRunner:
                 in {p.postfix for p in f.postfixes}
             ][0]
 
-        _, conn = self.get_process(rc.framework)
         conn.send(brc)
 
         if conn.poll(rc.timeout if rc.timeout else self._default_timeout):
@@ -358,7 +358,14 @@ class BenchmarkRunner:
         Args:
             rc: runtime configuration.
         """
-        results = self.run_benchmark_in_sub_process(rc)
+        try:
+            results = self.run_benchmark_in_sub_process(rc)
+        except Exception as e:
+            # self.kill_process(rc.framework)
+
+            results = BenchmarkResults(0, rc.implementation, rc.preset)
+            results.error_state = ErrorCodes.FAILED_EXECUTION
+            results.error_msg = f"Unexpected failure. {str(e)}"
 
         if rc.conn:
             framework = build_framework(rc.framework)
@@ -376,6 +383,7 @@ class BenchmarkRunner:
                     else "n/a",
                 ),
             )
+
 
 
 def _set_input_args(
