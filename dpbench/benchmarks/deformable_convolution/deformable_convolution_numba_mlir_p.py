@@ -45,7 +45,7 @@ def bilinear(input, offset_y, offset_x):
     return output / 2
 
 
-@njit(parallel=True, fastmath=True, gpu_fp64_truncate="auto")
+@njit(parallel=True, inline="always", fastmath=True, gpu_fp64_truncate="auto")
 def deform(
     input, offset, output, stride, pad, dilation, groups, deformable_groups
 ):
@@ -78,7 +78,7 @@ def deform(
                 output[c, kh, kw, h, w] = bilinear(input[c], offset_y, offset_x)
 
 
-@njit(parallel=True, fastmath=True, gpu_fp64_truncate="auto")
+@njit(parallel=True, inline="always", fastmath=True, gpu_fp64_truncate="auto")
 def deformable_convolution_b1(
     input,
     output,
@@ -107,7 +107,7 @@ def deformable_convolution_b1(
     _output[:] = _output + _bias
 
 
-@njit(parallel=True, gpu_fp64_truncate="auto")
+@njit(parallel=True, fastmath=True, gpu_fp64_truncate="auto")
 def jdeformable_convolution(
     input,
     output,
